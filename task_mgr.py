@@ -1,5 +1,6 @@
 from config import Config
 import os
+import subprocess
 
 
 class TaskMgr:
@@ -19,7 +20,8 @@ class TaskMgr:
     def task_get():
         config = Config()
         exe_dir = config.router_dir + "/" + config.exe_name
-        os.system(exe_dir)
+        ret = subprocess.check_call(exe_dir)
+        print(ret)
 
     def get_target(self, idx):
         res = set()
@@ -33,9 +35,12 @@ class TaskMgr:
         config = Config()
         self.task_alloc()
         nirgam_exe = config.nirgam_dir + "/nirgam"
-        os.system(nirgam_exe)
-        res = config.nirgam_dir + "/results"
         pwd = os.getcwd()
+        os.chdir(config.nirgam_dir)
+        ret = subprocess.call(nirgam_exe)
+        os.chdir(pwd)
+        res = config.nirgam_dir + "/results"
+        os.system("rm -rf %s" % (pwd + "/results"))
         os.system("cp -r %s %s" % (res, pwd + "/results"))
 
     def task_alloc(self):
@@ -50,9 +55,12 @@ class TaskMgr:
 
         application_config = config.nirgam_dir + "/config/application.config"
         application = open(application_config, 'w')
+        out = set()
         for task in self.tasks:
             for item in task:
-                application.write("%d news_w.so\n" % item)
+                out.add(item)
+        for task in out:
+            application.write("%d news_w.so\n" % task)
         application.close()
 
         traffic_dir = config.nirgam_dir + "/config/traffic"
