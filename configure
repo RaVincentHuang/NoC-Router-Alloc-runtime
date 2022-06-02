@@ -1,0 +1,7 @@
+[Nirgam]
+nirgam_dir = /home/vincent/NIRGAM/nirgam
+
+[Router]
+router_dir = /home/vincent/mesh
+input_file = out.txt
+exe_name = mesh
