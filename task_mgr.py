@@ -4,10 +4,13 @@ import subprocess
 
 
 class TaskMgr:
-    def __init__(self):
+    def __init__(self, dir=None, name="inorder"):
         config = Config()
-        self.task_get()
-        input_dir = config.router_dir + "/" + config.input_file
+        if dir:
+            input_dir = dir
+        else:
+            self.task_get(name)
+            input_dir = config.router_dir + "/" + config.input_file
         file = open(input_dir, 'r')
         self.size = int(file.readline())
         tmp = []
@@ -17,11 +20,10 @@ class TaskMgr:
         self.tasks = tmp
 
     @staticmethod
-    def task_get():
+    def task_get(name):
         config = Config()
-        exe_dir = config.router_dir + "/" + config.exe_name
+        exe_dir = config.router_dir + "/" + name
         ret = subprocess.check_call(exe_dir)
-        print(ret)
 
     def get_target(self, idx):
         res = set()

@@ -9,8 +9,6 @@ class Config:
         self.nirgam_dir = configs.get("Nirgam", "nirgam_dir")
         self.router_dir = configs.get("Router", "router_dir")
         self.input_file = configs.get("Router", "input_file")
-        self.exe_name = configs.get("Router", "exe_name")
-
 
 if __name__ == "__main__":
     my_parser = ArgumentParser(description='config')
